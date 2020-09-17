@@ -11,7 +11,7 @@ import (
 // text string, a base 64 encoded string, or an id for a key in a key management/vault system.
 type SecretTemplateValue struct {
 	// The name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
-	Name string `json:"name"`
+	Name string `json:"name" yaml:"name"`
 
 	// Value represents a raw value that will be base 64 encoded and injected into the secret
 	// +optional
@@ -39,17 +39,17 @@ type SecretTemplateSpec struct {
 	// and services.
 	// More info: http://kubernetes.io/docs/user-guide/labels
 	// +optional
-	Labels map[string]string `json:"labels,omitempty" protobuf:"bytes,11,rep,name=labels"`
+	Labels map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations" yaml:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
 
 	// Annotations is an unstructured key value map stored with a resource that may be
 	// set by external tools to store and retrieve arbitrary metadata. They are not
 	// queryable and should be preserved when modifying objects.
 	// More info: http://kubernetes.io/docs/user-guide/annotations
 	// +optional
-	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
+	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations" yaml:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
 
 	// List of values that will be inserted into the generated secret
-	Values []SecretTemplateValue  `json:"values"`
+	Values []SecretTemplateValue  `json:"values" yaml:"values"`
 }
 
 // SecretTemplateStatus defines the observed state of SecretTemplate
@@ -65,11 +65,11 @@ type SecretTemplateStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=secrettemplates,scope=Namespaced
 type SecretTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline" yaml:"inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 
-	Spec   SecretTemplateSpec   `json:"spec,omitempty"`
-	Status SecretTemplateStatus `json:"status,omitempty"`
+	Spec   SecretTemplateSpec   `json:"spec,omitempty" yaml:"spec,omitempty"`
+	Status SecretTemplateStatus `json:"status,omitempty" yaml:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
