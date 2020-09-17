@@ -39,7 +39,7 @@ type SecretTemplateSpec struct {
 	// and services.
 	// More info: http://kubernetes.io/docs/user-guide/labels
 	// +optional
-	Labels map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations" yaml:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
+	Labels map[string]string `json:"labels,omitempty" protobuf:"bytes,11,rep,name=labels" yaml:"labels,omitempty" protobuf:"bytes,11,rep,name=labels"`
 
 	// Annotations is an unstructured key value map stored with a resource that may be
 	// set by external tools to store and retrieve arbitrary metadata. They are not
