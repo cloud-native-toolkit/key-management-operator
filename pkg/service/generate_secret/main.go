@@ -21,6 +21,7 @@ func newMetadata(name string, labels *map[string]string, annotations *map[string
 
 func newSecret(metadata *metav1.ObjectMeta, data *map[string][]byte) *corev1.Secret {
 	return &corev1.Secret{
+		TypeMeta: metav1.TypeMeta{Kind: "Secret", APIVersion: "v1"},
 		ObjectMeta: *metadata,
 		Data: *data,
 	}
