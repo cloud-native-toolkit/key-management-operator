@@ -28,6 +28,14 @@ func newSecret(metadata *metav1.ObjectMeta, data *map[string][]byte) *corev1.Sec
 }
 
 func GenerateSecret(secretTemplate *keymanagementv1.SecretTemplate) *corev1.Secret {
+	kp := *secretTemplate
+
+	keyManager := factory.LoadKeyManager(kp.ObjectMeta.Annotations)
+
+	return generateSecret(keyManager, secretTemplate)
+}
+
+func generateSecret(keyManager *key_management.KeyManager, secretTemplate *keymanagementv1.SecretTemplate) *corev1.Secret {
 	var values map[string][]byte
 	var annotations map[string]string
 
@@ -35,8 +43,6 @@ func GenerateSecret(secretTemplate *keymanagementv1.SecretTemplate) *corev1.Secr
 	annotations = make(map[string]string)
 
 	kp := *secretTemplate
-
-	keyManager := factory.LoadKeyManager(kp.ObjectMeta.Annotations)
 
 	(*keyManager).PopulateMetadata(&annotations)
 
@@ -51,22 +57,35 @@ func GenerateSecret(secretTemplate *keymanagementv1.SecretTemplate) *corev1.Secr
 }
 
 func convertValue(keyManager *key_management.KeyManager, keyValue *keymanagementv1.SecretTemplateValue, annotations *map[string]string) []byte {
-	var result []byte
-
-	km := *keyManager
 	kp := *keyValue
 
 	if kp.KeyId != "" {
-		result = []byte(km.GetKey(kp.KeyId))
+		km := *keyManager
+		result := processBase64StringValue(km.GetKey(kp.KeyId))
 
 		a := *annotations
 
 		a[fmt.Sprintf("%s.keyId/%s", km.Id(), kp.Name)] = kp.KeyId
-	} else if kp.Value != "" {
-		result = []byte(base64.StdEncoding.EncodeToString([]byte(kp.Value)))
-	} else {
-		result = []byte(kp.B64Value)
-	}
 
-	return result
+		return result
+	} else if kp.Value != "" {
+		return processStringValue(kp.Value)
+	} else {
+		return processBase64StringValue(kp.B64Value)
+	}
+}
+
+func processBase64StringValue(b64value string) []byte {
+	encodedBytes := []byte(b64value)
+
+	var unencodedBytes []byte
+	unencodedBytes = make([]byte, len(encodedBytes))
+
+	base64.StdEncoding.Decode(unencodedBytes, encodedBytes)
+
+	return unencodedBytes
+}
+
+func processStringValue(value string) []byte {
+	return []byte(value)
 }
