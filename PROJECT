@@ -1,7 +1,11 @@
-domain: my.domain
+domain: ibm
 layout: go.kubebuilder.io/v2
 projectName: key-management-operator
 repo: github.com/ibm-garage-cloud/key-management-operator
+resources:
+- group: keymanagement
+  kind: SecretTemplate
+  version: v1
 version: 3-alpha
 plugins:
   go.sdk.operatorframework.io/v2-alpha: {}
