@@ -12,14 +12,22 @@
 make test
 ```
 
+### Build and push the image
+
+```shell script
+make container-build container-push
+```
+
 ### Run the operator
 
 ```shell script
 make install
-make deploy IMG=<some-registry>/<project-name>:<tag>
+make deploy
 ```
 
 ## Initial setup
+
+These are the steps that were performed to initialize the operator.
 
 ### Initialize the operator
 
