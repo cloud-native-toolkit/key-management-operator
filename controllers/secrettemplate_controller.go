@@ -18,6 +18,12 @@ package controllers
 
 import (
 	"context"
+	"github.com/ibmgaragecloud/key-management-operator/service/generate_secret"
+	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -41,9 +47,52 @@ func (r *SecretTemplateReconciler) Reconcile(req ctrl.Request) (ctrl.Result, err
 	_ = context.Background()
 	_ = r.Log.WithValues("secrettemplate", req.NamespacedName)
 
-	// your logic here
+	// Fetch the SecretTemplate instance
+	instance := &keymanagementv1.SecretTemplate{}
+	err := r.Client.Get(context.TODO(), req.NamespacedName, instance)
+	if err != nil {
+		if errors.IsNotFound(err) {
+			// Request object not found, could have been deleted after reconcile request.
+			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
+			// Return and don't requeue
+			return reconcile.Result{}, nil
+		}
+		// Error reading the object - requeue the request.
+		return reconcile.Result{}, err
+	}
 
-	return ctrl.Result{}, nil
+	// Define a new Pod object
+	secret := newSecretForCR(instance)
+
+	// Set SecretTemplate instance as the owner and controller
+	if err := controllerutil.SetControllerReference(instance, secret, r.Scheme); err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Check if this Pod already exists
+	found := &corev1.Secret{}
+	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: secret.Name, Namespace: secret.Namespace}, found)
+	if err != nil && errors.IsNotFound(err) {
+		r.Log.Info("Creating a new Secret", "Secret.Namespace", secret.Namespace, "Secret.Name", secret.Name)
+		err = r.Client.Create(context.TODO(), secret)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+
+		// Secret created successfully - don't requeue
+		return reconcile.Result{}, nil
+	} else if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Pod already exists - don't requeue
+	r.Log.Info("Skip reconcile: Secret already exists", "Secret.Namespace", found.Namespace, "Secret.Name", found.Name)
+	return reconcile.Result{}, nil
+}
+
+// newSecretForCR returns a busybox pod with the same name/namespace as the cr
+func newSecretForCR(cr *keymanagementv1.SecretTemplate) *corev1.Secret {
+	return generate_secret.GenerateSecret(cr)
 }
 
 func (r *SecretTemplateReconciler) SetupWithManager(mgr ctrl.Manager) error {
