@@ -1,6 +1,6 @@
 domain: ibm
 layout: go.kubebuilder.io/v2
-projectName: key-management-operator
+projectName: key-management
 repo: github.com/ibmgaragecloud/key-management-operator
 resources:
 - group: keymanagement
