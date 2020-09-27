@@ -12,6 +12,13 @@
 make test
 ```
 
+### Run the operator
+
+```shell script
+make install
+make deploy IMG=<some-registry>/<project-name>:<tag>
+```
+
 ## Initial setup
 
 ### Initialize the operator
