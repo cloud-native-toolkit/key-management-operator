@@ -4,6 +4,14 @@
 
 - Operator SDK v1.0.1
 
+## Development
+
+### Run the tests
+
+```shell script
+make test
+```
+
 ## Initial setup
 
 ### Initialize the operator
