@@ -30,7 +30,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	keymanagementv1 "github.com/ibmgaragecloud/key-management-operator/api/v1"
+	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
 	// +kubebuilder:scaffold:imports
 )
 

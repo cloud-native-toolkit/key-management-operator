@@ -18,7 +18,7 @@ package controllers
 
 import (
 	"context"
-	"github.com/ibmgaragecloud/key-management-operator/service/generate_secret"
+	"github.com/ibm-garage-cloud/key-management-operator/service/generate_secret"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
@@ -30,7 +30,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	keymanagementv1 "github.com/ibmgaragecloud/key-management-operator/api/v1"
+	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
 )
 
 // SecretTemplateReconciler reconciles a SecretTemplate object

@@ -2,7 +2,7 @@ package generate_secret
 
 import (
 	"encoding/base64"
-	"github.com/ibmgaragecloud/key-management-operator/util/test_support"
+	"github.com/ibm-garage-cloud/key-management-operator/util/test_support"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )

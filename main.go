@@ -27,8 +27,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	keymanagementv1 "github.com/ibmgaragecloud/key-management-operator/api/v1"
-	"github.com/ibmgaragecloud/key-management-operator/controllers"
+	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
+	"github.com/ibm-garage-cloud/key-management-operator/controllers"
 	// +kubebuilder:scaffold:imports
 )
 

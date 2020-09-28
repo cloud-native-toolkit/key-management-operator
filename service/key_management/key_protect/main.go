@@ -72,7 +72,7 @@ func (k KeyProtect) GetKey(keyId *string) *string {
 	request, err := http.NewRequest("GET", url, nil)
 	request.Header.Set("accept", "application/vnd.ibm.kms.key+json")
 	request.Header.Set("bluemix-instance", config.instanceId)
-	request.Header.Set("Authorization", "Bearer " + *accessToken)
+	request.Header.Set("Authorization", "Bearer "+*accessToken)
 
 	if err != nil {
 		log.Fatalln(err)

@@ -1,4 +1,4 @@
-module github.com/ibmgaragecloud/key-management-operator
+module github.com/ibm-garage-cloud/key-management-operator
 
 go 1.13
 
@@ -13,4 +13,4 @@ require (
 	sigs.k8s.io/controller-runtime v0.6.2
 )
 
-replace github.com/ibmgaragecloud/key-management-operator => ./
+replace github.com/ibm-garage-cloud/key-management-operator => ./

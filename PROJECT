@@ -1,7 +1,7 @@
 domain: ibm
 layout: go.kubebuilder.io/v2
 projectName: key-management
-repo: github.com/ibmgaragecloud/key-management-operator
+repo: github.com/ibm-garage-cloud/key-management-operator
 resources:
 - group: keymanagement
   kind: SecretTemplate

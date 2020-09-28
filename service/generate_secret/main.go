@@ -3,9 +3,9 @@ package generate_secret
 import (
 	"encoding/base64"
 	"fmt"
-	keymanagementv1 "github.com/ibmgaragecloud/key-management-operator/api/v1"
-	"github.com/ibmgaragecloud/key-management-operator/service/key_management"
-	"github.com/ibmgaragecloud/key-management-operator/service/key_management/factory"
+	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
+	"github.com/ibm-garage-cloud/key-management-operator/service/key_management"
+	"github.com/ibm-garage-cloud/key-management-operator/service/key_management/factory"
 	"github.com/imdario/mergo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

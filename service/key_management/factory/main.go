@@ -2,8 +2,8 @@ package factory
 
 import (
 	"fmt"
-	"github.com/ibmgaragecloud/key-management-operator/service/key_management"
-	"github.com/ibmgaragecloud/key-management-operator/service/key_management/key_protect"
+	"github.com/ibm-garage-cloud/key-management-operator/service/key_management"
+	"github.com/ibm-garage-cloud/key-management-operator/service/key_management/key_protect"
 )
 
 func LoadKeyManager(annotations map[string]string) *key_management.KeyManager {
