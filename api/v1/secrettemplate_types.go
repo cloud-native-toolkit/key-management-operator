@@ -26,16 +26,24 @@ import (
 // SecretTemplateValue defines an entry in the generated secret. Each entry can be defined as either a raw
 // text string, a base 64 encoded string, or an id for a key in a key management/vault system.
 type SecretTemplateValue struct {
-	// The name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
-	Name string `json:"name" yaml:"name"`
+	// Name is the name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
+	Name string `json:"name,omitempty" yaml:"name,omitempty"` // Deprecated use Key instead
+	// Name is the name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
+	Key string `json:"key" yaml:"key"`
 
 	// Value represents a raw value that will be base 64 encoded and injected into the secret
 	// +optional
-	Value string `yaml:"value,omitempty" json:"value,omitempty"`
-
-	// B64Value represents a base 64 encoded value that will be injected directly into the secret
+	Value string `yaml:"value,omitempty" json:"value,omitempty"` // Deprecated use StringData instead
+	// StringData represents a raw value that will be base 64 encoded and injected into the secret
 	// +optional
-	B64Value string `yaml:"b64value,omitempty" json:"b64value,omitempty"`
+	StringData string `yaml:"stringData,omitempty" json:"stringData,omitempty"`
+
+	// B64Value represents a base64 encoded value that will be injected directly into the secret
+	// +optional
+	B64Value string `yaml:"b64value,omitempty" json:"b64value,omitempty"` // Deprecated use Data instead
+	// Data represents a base64 encoded value that will be injected directly into the secret
+	// +optional
+	Data string `yaml:"data,omitempty" json:"data,omitempty"`
 
 	// KeyId represents an identifier for a key value stored in a key management system. The operator will look up
 	// the value of the key and inject it into the generated secret

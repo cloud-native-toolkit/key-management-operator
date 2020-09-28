@@ -41,11 +41,11 @@ spec:
   labels: {}
   annotations: {}
   values:
-    - name: url
-      value: https://ibm.com
-    - name: username
-      b64value: dGVhbS1jYXA=
-    - name: password
+    - key: url
+      stringData: https://ibm.com
+    - key: username
+      data: dGVhbS1jYXA=
+    - key: password
       keyId: 36397b07-d98d-4c0b-bd7a-d6c290163684
 ``` 
 
@@ -57,11 +57,11 @@ spec:
     
 - The `metadata.name` value given will be used as the name for the Secret that will be generated.
 - The information in `spec.labels` and `spec.annotations` will be copied over as the `labels` and `annotations` in the Secret that is generated
-- The `spec.values` section contains the information that should be provided in the `data` section of the generated Secret. There are three prossible ways the values can be provided:
+- The `spec.values` section contains the information that should be provided in the `data` section of the generated Secret. There are three possible ways the values can be provided:
 
-    - `value` - the actual value can be provided directly as clear text. This would be appropriate for information that is not sensitive but is required in the secret
-    - `b64value` - a base64 encoded value can be provided to the secret. This can be used for large values that might present formatting issues or for information that is not sensitive but that might be obfuscated a bit (like a username)
-    - `keyId` - the id (not the name) of the Standard Key that has been stored in Key Protect. The value stored in Key Protect can be anything
+    - `stringData` - the actual value can be provided directly as clear text. This would be appropriate for information that is not sensitive but is required in the secret.
+    - `data` - a base64 encoded value can be provided to the secret. This can be used for large values that might present formatting issues or for information that is not sensitive but that might be obfuscated a bit (like a username).
+    - `keyId` - the id (not the name) of the Standard Key that has been stored in Key Protect. The value stored in Key Protect can be anything.
 
 ### Managing keys in Key Protect
 

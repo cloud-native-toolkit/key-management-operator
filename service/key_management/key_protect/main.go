@@ -60,19 +60,19 @@ func New(config map[string]string) KeyProtect {
 	return KeyProtect{"key-protect", buildConfig(config)}
 }
 
-func (k KeyProtect) GetKey(keyId string) string {
+func (k KeyProtect) GetKey(keyId *string) *string {
 	config := k.config
 
-	accessToken := getAccessToken(config.apiKey)
+	accessToken := getAccessToken(&config.apiKey)
 
-	url := fmt.Sprintf("https://%s.kms.cloud.ibm.com/api/v2/keys/%s", config.region, keyId)
+	url := fmt.Sprintf("https://%s.kms.cloud.ibm.com/api/v2/keys/%s", config.region, *keyId)
 
 	client := http.Client{}
 
 	request, err := http.NewRequest("GET", url, nil)
 	request.Header.Set("accept", "application/vnd.ibm.kms.key+json")
 	request.Header.Set("bluemix-instance", config.instanceId)
-	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Authorization", "Bearer " + *accessToken)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -93,15 +93,17 @@ func (k KeyProtect) GetKey(keyId string) string {
 	var result keyProtectResult
 	json.Unmarshal(body, &result)
 
-	return result.Resources[0].Payload
+	payload := result.Resources[0].Payload
+
+	return &payload
 }
 
-func getAccessToken(apiKey string) string {
+func getAccessToken(apiKey *string) *string {
 	url := "https://iam.cloud.ibm.com/identity/token"
 
 	client := http.Client{}
 
-	bodyText := "grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey=" + apiKey
+	bodyText := "grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey=" + *apiKey
 
 	request, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(bodyText)))
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -126,7 +128,9 @@ func getAccessToken(apiKey string) string {
 	var result tokenResult
 	json.Unmarshal(body, &result)
 
-	return result.AccessToken
+	accessToken := result.AccessToken
+
+	return &accessToken
 }
 
 func (k KeyProtect) PopulateMetadata(annotations *map[string]string) {
