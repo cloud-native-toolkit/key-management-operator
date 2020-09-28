@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: ibmgaragecloud/key-management
-  newTag: latest
+  newTag: 0.0.1

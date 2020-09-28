@@ -29,7 +29,7 @@ type SecretTemplateValue struct {
 	// Name is the name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
 	Name string `json:"name,omitempty" yaml:"name,omitempty"` // Deprecated use Key instead
 	// Name is the name or key for the entry in the secret data (e.g. the secret will contain <Name>: <Value>
-	Key string `json:"key" yaml:"key"`
+	Key string `json:"key,omitempty" yaml:"key,omitempty"`
 
 	// Value represents a raw value that will be base 64 encoded and injected into the secret
 	// +optional
