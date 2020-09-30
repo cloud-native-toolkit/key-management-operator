@@ -11,12 +11,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func newMetadata(name string, labels *map[string]string, annotations *map[string]string) *metav1.ObjectMeta {
-	return &metav1.ObjectMeta{
-		Name:        name,
+func newMetadata(objectMetadata *metav1.ObjectMeta, labels *map[string]string, annotations *map[string]string) *metav1.ObjectMeta {
+	om := *objectMetadata
+
+	result := metav1.ObjectMeta{
+		Name:        om.Name,
 		Labels:      *labels,
 		Annotations: *annotations,
 	}
+
+	if om.Namespace != "" {
+		result.Namespace = om.Namespace
+	}
+
+	return &result
 }
 
 func newSecret(metadata *metav1.ObjectMeta, data *map[string][]byte) *corev1.Secret {
@@ -53,7 +61,7 @@ func generateSecret(keyManager *key_management.KeyManager, secretTemplate *keyma
 
 	mergo.Merge(&annotations, kp.Spec.Annotations)
 
-	return newSecret(newMetadata(kp.ObjectMeta.Name, &kp.Spec.Labels, &annotations), &values)
+	return newSecret(newMetadata(&kp.ObjectMeta, &kp.Spec.Labels, &annotations), &values)
 }
 
 func stringValue(value *string, defaultValue *string) *string {

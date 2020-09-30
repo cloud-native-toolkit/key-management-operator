@@ -1,0 +1,57 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+    operators.operatorframework.io/builder: operator-sdk-v1.0.1
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v2
+  name: key-management.vX.Y.Z
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: SecretTemplate is the Schema for the secrettemplates API
+      displayName: Secret Template
+      kind: SecretTemplate
+      name: secrettemplates.keymanagement.ibm
+      version: v1
+  description: Generates secrets from values stored in key protect as provided by a SecretTemplate CR
+  displayName: key-management
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - secret
+  - gitops
+  - key manager
+  - key protect
+  links:
+  - name: Key Management
+    url: https://key-management.domain
+  maintainers:
+  - email: seansund@us.ibm.com
+    name: Sean Sundberg
+  - email: csantana@us.ibm.com
+    name: Carlos Santana
+  - email: lsteck@us.ibm.com
+    name: Larry Steck
+  maturity: alpha
+  provider:
+    name: IBM
+    url: https://cloudnativetoolkit.dev
+  version: 0.0.0

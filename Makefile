@@ -120,3 +120,8 @@ bundle: manifests
 .PHONY: bundle-build
 bundle-build:
 	${BUILDER} build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+
+# Build the bundle image.
+.PHONY: bundle-push
+bundle-push:
+	${BUILDER} push $(BUNDLE_IMG)
