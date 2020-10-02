@@ -10,6 +10,7 @@ import (
 	"github.com/imdario/mergo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"strings"
 )
 
 func newMetadata(objectMetadata *metav1.ObjectMeta, labels *map[string]string, annotations *map[string]string) *metav1.ObjectMeta {
@@ -83,7 +84,9 @@ func convertValue(keyManager *key_management.KeyManager, keyValue *keymanagement
 
 		a := *annotations
 
-		a[fmt.Sprintf("%s.keyId/%s", km.Id(), kp.Name)] = kp.KeyId
+		annotationName := strings.ReplaceAll(strings.ToLower(kp.Name), "_", "-")
+
+		a[fmt.Sprintf("%s.keyId/%s", km.Id(), annotationName)] = kp.KeyId
 
 		return result
 	} else if kp.Value != "" || kp.StringData != "" {
