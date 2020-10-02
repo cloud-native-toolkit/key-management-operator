@@ -1,6 +1,7 @@
 package generate_secret
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
@@ -100,7 +101,9 @@ func processBase64StringValue(b64value *string) *[]byte {
 
 	base64.StdEncoding.Decode(unencodedBytes, encodedBytes)
 
-	return &unencodedBytes
+	trimmedBytes := bytes.Trim(unencodedBytes, "\x00")
+
+	return &trimmedBytes
 }
 
 func processStringValue(value *string) *[]byte {

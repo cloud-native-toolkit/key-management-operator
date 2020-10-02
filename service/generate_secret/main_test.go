@@ -49,77 +49,11 @@ func Test_newSecret(t *testing.T) {
 	test_support.ExpectEqual(t, expectedValue, string(secret.Data["test"]))
 }
 
-//func Test_generateSecret(t *testing.T) {
-//
-//	value := "value"
-//	keyValue := "dmFsdWU="
-//	b64encodedvalue := "YnY2NHZhbHVl="
-//	b64value := "b64value"
-//
-//	var km key_management.KeyManager
-//	km = MockKeyManager{id: "id", value: keyValue}
-//
-//	var values []v1.SecretTemplateValue
-//	values = []v1.SecretTemplateValue{
-//		v1.SecretTemplateValue{Name: "name1", KeyId: "id"},
-//		v1.SecretTemplateValue{Name: "name2", Value: value},
-//		v1.SecretTemplateValue{Name: "name3", B64Value: b64encodedvalue},
-//	}
-//
-//	secretTemplate := v1.SecretTemplate{
-//		ObjectMeta: metav1.ObjectMeta{Name: "mysecret"},
-//		Spec: v1.SecretTemplateSpec{
-//			Values: values,
-//		},
-//	}
-//
-//	actualValue := *generateSecret(&km, &secretTemplate)
-//
-//	test_support.ExpectEqual(t, value, string(actualValue.Data["name1"]))
-//	test_support.ExpectEqual(t, value, string(actualValue.Data["name2"]))
-//	test_support.ExpectEqual(t, b64value, string(actualValue.Data["name3"]))
-//}
+func Test_processBase64StringValue(t *testing.T) {
 
-//func Test_generateSecret_marshal(t *testing.T) {
-//
-//	value := "value"
-//	keyValue := "dmFsdWU="
-//	b64value := "YnY2NHZhbHVl="
-//
-//	var km key_management.KeyManager
-//	km = MockKeyManager{id: "id", value: keyValue}
-//
-//	var values []v1.SecretTemplateValue
-//	values = []v1.SecretTemplateValue{
-//		v1.SecretTemplateValue{Name: "name1", KeyId: "id"},
-//		v1.SecretTemplateValue{Name: "name2", Value: value},
-//		v1.SecretTemplateValue{Name: "name3", B64Value: b64value},
-//	}
-//
-//	secretTemplate := v1.SecretTemplate{
-//		ObjectMeta: metav1.ObjectMeta{Name: "mysecret"},
-//		Spec: v1.SecretTemplateSpec{
-//			Values: values,
-//		},
-//	}
-//
-//	secret := *generateSecret(&km, &secretTemplate)
-//
-//	jsonSecret, err := json.Marshal(&secret)
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	yamlSecret, err := yaml2.JSONToYAML(jsonSecret)
-//
-//	actualValue := MySecret{}
-//
-//	err = yaml.Unmarshal(yamlSecret, &actualValue)
-//	if err != nil{
-//		t.Error(err)
-//	}
-//
-//	test_support.ExpectEqualBase64(t, keyValue, string(actualValue.Data["name1"]))
-//	test_support.ExpectEqualBase64(t, "dmFsdWU=", string(actualValue.Data["name2"]))
-//	test_support.ExpectEqualBase64(t, b64value, string(actualValue.Data["name3"]))
-//}
+	b64String := "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
+
+	result := processBase64StringValue(&b64String)
+
+	test_support.ExpectEqual(t, "This is a test string", string(*result))
+}
