@@ -57,7 +57,10 @@ func generateSecret(keyManager *key_management.KeyManager, secretTemplate *keyma
 
 	specValues := kp.Spec.Values
 	for _, kps := range specValues {
-		values[*stringValue(&kps.Key, &kps.Name)] = *convertValue(keyManager, &kps, &annotations)
+		key := *stringValue(&kps.Key, &kps.Name)
+		value := *convertValue(keyManager, &kps, &annotations)
+
+		values[key] = value
 	}
 
 	mergo.Merge(&annotations, kp.Spec.Annotations)

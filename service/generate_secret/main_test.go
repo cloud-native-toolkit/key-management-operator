@@ -2,6 +2,8 @@ package generate_secret
 
 import (
 	"encoding/base64"
+	keymanagementv1 "github.com/ibm-garage-cloud/key-management-operator/api/v1"
+	"github.com/ibm-garage-cloud/key-management-operator/service/key_management"
 	"github.com/ibm-garage-cloud/key-management-operator/util/test_support"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
@@ -54,6 +56,38 @@ func Test_processBase64StringValue(t *testing.T) {
 	b64String := "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
 
 	result := processBase64StringValue(&b64String)
+
+	test_support.ExpectEqual(t, "This is a test string", string(*result))
+}
+
+type TestKeyManager struct {
+	Value *string
+}
+
+func (k TestKeyManager) GetKey(keyId *string) *string {
+	return k.Value
+}
+
+func (k TestKeyManager) PopulateMetadata(annotations *map[string]string) {
+
+}
+
+func (k TestKeyManager) Id() string {
+	return "id"
+}
+
+func Test_convertValue_keyId(t *testing.T) {
+
+	b64String := "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
+
+	var km key_management.KeyManager
+	km = TestKeyManager{Value: &b64String}
+
+	keyValue := keymanagementv1.SecretTemplateValue{Key: "Key", KeyId: "keyid"}
+
+	annotations := make(map[string]string)
+
+	result := convertValue(&km, &keyValue, &annotations)
 
 	test_support.ExpectEqual(t, "This is a test string", string(*result))
 }
