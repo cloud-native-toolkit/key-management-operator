@@ -18,6 +18,14 @@ BUILDER ?= docker
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"
 
+ifeq "$(BUILDER)" "buildah"
+BUILD_IMAGE := buildah bud
+else ifeq "$(BUILDER)" "podman"
+BUILD_IMAGE := podman build --layers --format=docker
+else
+BUILD_IMAGE := $(BUILDER) build
+endif
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -70,7 +78,7 @@ generate: controller-gen
 
 # Build the docker image
 container-build: test
-	${BUILDER} build . -t ${IMG}
+	${BUILD_IMAGE} . -t ${IMG}
 
 # Push the docker image
 container-push:
@@ -119,7 +127,7 @@ bundle: manifests
 # Build the bundle image.
 .PHONY: bundle-build
 bundle-build:
-	${BUILDER} build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+	${BUILD_IMAGE} -f bundle.Dockerfile -t $(BUNDLE_IMG) .
 
 # Build the bundle image.
 .PHONY: bundle-push
