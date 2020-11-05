@@ -12,6 +12,7 @@ LABEL operators.operatorframework.io.metrics.project_layout=go.kubebuilder.io/v2
 LABEL operators.operatorframework.io.test.config.v1=tests/scorecard/
 LABEL operators.operatorframework.io.test.mediatype.v1=scorecard+v1
 
+RUN mkdir -p /manifests && mkdir -p /metadata && mkdir -p /tests/scorecard
 COPY bundle/manifests /manifests/
 COPY bundle/metadata /metadata/
 COPY bundle/tests/scorecard /tests/scorecard/
